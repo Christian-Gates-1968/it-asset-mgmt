@@ -357,5 +357,3 @@ This project was developed as part of an internship at Indian Oil Corporation Li
 - All open-source contributors whose libraries made this possible
 
 ---
-
-**Built with ❤️ during IOCL Internship**
