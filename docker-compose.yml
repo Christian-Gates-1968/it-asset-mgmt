@@ -1,0 +1,49 @@
+# Docker Compose for IT Asset Management System
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: iocl_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: krish
+      MYSQL_DATABASE: it_asset_mgmt
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - iocl_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pkrish"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: iocl_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: krish
+      DB_NAME: it_asset_mgmt
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - iocl_network
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+volumes:
+  mysql_data:
+
+networks:
+  iocl_network:
+    driver: bridge
