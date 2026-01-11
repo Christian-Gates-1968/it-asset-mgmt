@@ -1,5 +1,4 @@
 # Docker Compose for IT Asset Management System
-version: '3.8'
 
 services:
   mysql:
@@ -10,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: krish
       MYSQL_DATABASE: it_asset_mgmt
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/setup.sql:/docker-entrypoint-initdb.d/setup.sql
